@@ -41,6 +41,52 @@ public class YelpDao {
 		}
 	}
 	
+	//archi
+	public List<ArcoGrafo> calcolaArchi(String city, Year anno){
+		
+		String sql = "SELECT b1.business_id AS id1 , b2.business_id AS id2, AVG (r1.stars)-AVG (r2.stars) AS differenza "
+				+ "FROM business b1, business b2, reviews r1, reviews r2 "
+				+ "WHERE b1.business_id = r1.business_id "
+				+ "AND b2.business_id = r2.business_id "
+				+ "AND b1.city = b2.city "
+				+ "AND b1.city = ? "
+				+ "AND YEAR(r1.review_date) = YEAR(r2.review_date) "
+				+ "AND YEAR(r1.review_date) = ? "
+				+ "AND b1.business_id <> b2.business_id "
+				+ "GROUP BY b1.business_id, b2.business_id "
+				+ "HAVING differenza > 0";
+		
+		List<ArcoGrafo> result = new ArrayList<>();
+		
+		Connection conn = DBConnect.getConnection();
+
+		try {
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			st.setString(1, city);
+			st.setInt(2, anno.getValue());
+			
+			ResultSet res = st.executeQuery();
+			while (res.next()) {
+				
+				result.add(new ArcoGrafo(
+						res.getString("id1"),
+						res.getString("id2"),
+						res.getDouble("differenza")));
+			}
+		
+			res.close();
+			st.close();
+			conn.close();
+			return result;
+		
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	
+		
+	}
 	
 	public List<Business> getAllBusiness(){
 		String sql = "SELECT * FROM Business";
