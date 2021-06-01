@@ -49,6 +49,30 @@ public class Model {
 				this.grafo.edgeSet().size());
 	}
 	
-	
+	public Business getLocaleMigliore() {
+		
+		double max = 0.0;
+		Business result = null;
+		
+		for(Business b : this.grafo.vertexSet()) {
+			double val = 0.0;
+			//Archi entranti
+			for(DefaultWeightedEdge e : this.grafo.incomingEdgesOf(b)) {
+				val += this.grafo.getEdgeWeight(e);
+			}
+			//Archi uscenti
+			for(DefaultWeightedEdge e : this.grafo.outgoingEdgesOf(b)) {
+				val -= this.grafo.getEdgeWeight(e);
+			}
+			
+			if(val>max) {
+				max = val;
+				result = b;
+			}
+			
+		}
+		
+		return result;
+	}
 	
 }
