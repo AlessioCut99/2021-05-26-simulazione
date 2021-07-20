@@ -1,4 +1,4 @@
-package it.polito.tdp.yelp.db;
+package it.polito.tdp.yelp.model;
 
 public class ArcoGrafo {
 

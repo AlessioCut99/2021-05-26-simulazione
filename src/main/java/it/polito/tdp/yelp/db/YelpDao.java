@@ -1,4 +1,4 @@
-package it.polito.tdp.yelp.db;
+ package it.polito.tdp.yelp.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +8,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polito.tdp.yelp.model.ArcoGrafo;
 import it.polito.tdp.yelp.model.Business;
 import it.polito.tdp.yelp.model.Review;
 import it.polito.tdp.yelp.model.User;
@@ -186,6 +187,7 @@ public class YelpDao {
 		}
 	}
 	
+	//Vertici
 	public List<Business> getBusinessByCityAndYear(String city, Year anno){
 		
 		String sql = "SELECT * "
